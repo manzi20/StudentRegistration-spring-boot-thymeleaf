@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Student Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+</head>
+<body>
+<!--<nav class="navbar navbar-expand-md bg-dark navbar-dark">-->
+
+<div class ="container">
+  <div class = "row">
+    <h1> List Students </h1>
+  </div>
+
+
+  <hr class="border border-success border-2 opacity-50">
+  <hr class="border border-dark border-3 opacity-75">
+
+  <div class = "row d-flex">
+    <div class = "col-lg-4 d-flex p-1">
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addModal" >Add Product</button>
+<br>
+        <br>
+        <button type="button" class="btn btn-outline-dark "> <a style="text-decoration:none" href="/api/v1/av">Send Email</a> </button>
+
+
+<!--        <a class="btn btn-outline-dark " type="button" href="/api/v1/av">-->
+<!--            <p>Send Mail</p>-->
+<!--        </a>-->
+    </div>
+<!--      <div class=" col-lg-4 p-3 text-end">-->
+<!--          <a class="btn btn-outline-dark " href="/api/v1/av">-->
+<!--              <p>Send Mail</p>-->
+<!--          </a>-->
+<!--      </div>-->
+
+  </div>
+
+
+
+
+
+
+
+
+
+  <table class = "table table-striped table-bordered p-3">
+    <thead class = "table-dark">
+    <tr>
+      <th> Student First Name</th>
+      <th> Student Last Name</th>
+      <th>Student Address</th>
+      <th> Student Gender </th>
+      <th>student Phone</th>
+      <th> Department</th>
+      <th> Actions </th>
+
+    </tr>
+    </thead>
+
+    <tbody>
+
+    </tr>
+    <tr th:each = "stud: ${students}" >
+      <td th:text = "${stud.firstName}"></td>
+      <td th:text = "${stud.lastName}"></td>
+      <td th:text = "${stud.address}"></td>
+      <td th:text = "${stud.gender}"></td>
+      <td th:text = "${stud.phoneNumber}"></td>
+      <td th:text = "${stud.department.departmentName}"></td>
+      <td>
+<!--          <button  type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">-->
+<!--             Delete-->
+<!--          </button>-->
+
+<!--        <a th:href = "@{/students/{id}(id=${stud.id})}"-->
+<!--           class="btn btn-danger" data-bs-target="#deleteModal">delete</a>-->
+
+<!--          <a th:href = "@{/students/edit/{id}(id=${stud.id})}"-->
+<!--             class = "btn btn-success" data-bs-target="#updateModal">Update</a>-->
+
+          <div class = "row">
+              <div class = "col-lg-3">
+                  <a  href="#" class="btn btn-primary btn-update"
+                      th:data-url="${'/students/'+stud.id}"
+                  th:data-firstname="${stud.firstName}"
+                  th:data-lastname="${stud.lastName}"
+                      th:data-location="${stud.address}"
+                  th:data-mobile="${stud.phoneNumber}"
+                  th:data-gender="${stud.gender}"
+                      th:data-depart="${stud.department.departmentName}">
+
+<!--                           data-bs-toggle="modal" data-bs-target="#updateModal"-->
+                  Update</a>
+<!--                  th:href = "@{/students/edit/{id}(id=${stud.id})}"-->
+
+              </div> </div>
+
+          <a   href = "#" class="btn btn-danger btn-delete"
+              th:data-url="${'/students/del/'+stud.id}" >
+              <!--                           data-bs-toggle="modal" data-bs-target="#updateModal"-->
+              Delete</a>
+
+
+
+
+
+      </td>
+
+    </tr>
+    </tbody>
+
+  </table>
+
+</div>
+
+<!--------------Model Window----------------->
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New student</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form th:action="@{/student/addNew}"  method="post">
+                    <div class="mb-3">
+                        <label for="firstname" class="col-form-label">FirstName:</label>
+                        <input type="text" class="form-control" id="firstname" name="FirstName">
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label for="lastname" class="col-form-label">LastName:</label>
+                        <input type="text" class="form-control" id="lastname" name="LastName">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="col-form-label">address:</label>
+                        <input type="text" class="form-control" id="address" name="Address">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="col-form-label">PhoneNumber:</label>
+                        <input type="text" class="form-control" id="phone" name="phoneNumber">
+                    </div>
+
+
+                    <div class ="mb-3">
+                        <label for="gender" class="col-form-label" >Gender</label>
+                        <select  id="gender" class="form-select form-select-lg mb-3" name="Gender"  >
+
+                            <option th:value="'M'" th:text="Male"></option>
+                            <option th:value="'F'" th:text="Female"></option>
+                        </select>
+                    </div>
+
+
+                   <div class="mb-3">
+                    <label for="depart" class="col-form-label">Department</label>
+
+                    <select class="form-select form-select-lg mb-3"  id="depart" name="department" >
+
+<!--                        <option th:value="'D1'" th:text="Depart1"></option>-->
+<!--                        <option th:value="'D2'" th:text="depart2"></option>-->
+
+                        <option th:each="dep : ${departs}"
+                              th:value="${dep.departmentId}"
+                                th:text="${dep.departmentName}">
+                        </option>
+                    </select>
+
+                   </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                </form>
+
+            <div class="modal-footer">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!---------------- End of model Window--------------->
+
+
+
+
+
+<!-------------------start of Update Model-------------------->
+
+
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ModalLabel">update</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action=""  method="POST" id="update-form">
+
+
+
+                    <div class="mb-3">
+                        <label for="_firstname" class="col-form-label">FirstName:</label>
+                        <input type="text" class="form-control"  id="_firstname" name="FirstName">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="_lastname" class="col-form-label">LastName:</label>
+                        <input type="text" class="form-control"   id="_lastname" name="LastName">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="location" class="col-form-label">Address:</label>
+                        <input type="text" class="form-control"  id="location" name="Address">
+                    </div>
+                    <div class="mb-3">
+                        <label for="mobile" class="col-form-label">PhoneNumber:</label>
+                        <input type="text" class="form-control"  id="mobile" name="PhoneNumber">
+                    </div>
+
+                    <div class ="mb-3">
+                        <label for="gender" class="col-form-label" >Gender</label>
+                        <select  id="_gender" class="form-select form-select-lg mb-3" name="Gender"  >
+
+                            <option th:value="'M'" th:text="Male"></option>
+                            <option th:value="'F'" th:text="Female"></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="depart" class="col-form-label">Department</label>
+
+                        <select class="form-select form-select-lg mb-3"  id="_depart" name="department" >
+<!--                            <option th:value="'D1'" th:text="Depart1"></option>-->
+<!--                            <option th:value="'D2'" th:text="depart2"></option>-->
+
+                            <option th:each="dep : ${departs}"
+                                    th:value="${dep.departmentId}"
+                                    th:text="${dep.departmentName}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <button type="submit" class="btn btn-primary" id="confirmUpdate" >update</button>
+
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-------------------end of Update Model-------------------->
+
+
+
+
+
+<!-------------------start of delete Model-------------------->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModaLabel">Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h3>Do you want to delete this person</h3>
+                <form action="" method="get" id="delete-form">
+<!--                 //   <a class="btn btn-primary" id="confirmDelete" href="" >delete</a>-->
+                    <button type="submit" class="btn btn-primary"  id="confirmDelete" >Yes Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel Delete</button>
+<!--                    <button type="button" class="btn btn-primary">Save changes</button>-->
+                </form>
+
+            </div>
+            <div class="modal-footer">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-------------------end of delete Model-------------------->
+
+<div class="container text-center">
+    <div th:if="${message_save}" class="alert alert-success text-center">
+        <i class="fa fa-check-circle" aria-hidden="true"></i>
+        [[${message_save}]]
+
+    </div>
+    <div th:if="${message_delete}" class="alert alert-success text-center">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        [[${message_delete}]]
+
+    </div>
+    <div th:if="${message_update}" class="alert alert-success text-center">
+        <i class="fa fa-check-circle" aria-hidden="true"></i>
+        [[${message_update}]]
+
+    </div>
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.3.min.js" ></script>
+
+<script>
+
+
+
+    $(document). ready(function () {
+        $("#addStudent").click(function (){
+            $("#addModal").modal("show");
+
+        });
+
+        $(".btn-update").click(function (e){
+            e.preventDefault();
+            $("#updateModal").modal("show")
+            $("#_firstname").val($(this).data("firstname"))
+            $("#_lastname").val($(this).data("lastname"))
+            $("#location").val($(this).data("location"))
+            $("#mobile").val($(this).data("mobile"))
+            $("#_gender").val($(this).data("gender"))
+            $("#_depart").val($(this).data("depart"))
+
+            let href =$(this).attr('href');
+            $('confirmUpdate').attr("href", href);
+
+
+             $("#update-form").attr("action",$(this).data("url"))
+        });
+
+        $(".btn-delete").click(function (e){
+            e.preventDefault();
+            $("#deleteModal").modal("show")
+            let href =$(this).attr('href');
+            $('#confirmDelete').attr("href", href);
+
+            $("#delete-form").attr("action",$(this).data("url"))
+        });
+
+    });
+
+   // $('.table #deleteModal').on('click', function(event) {
+   //     event.preventDefault();
+   //     let href =$(this).attr('href');
+   //     $('#deleteModal #delRef').attr("href", href);
+   //     $('#deleteModal').modal();
+   //
+   //  });
+
+
+
+
+</script>
+
+</body>
+</html>
